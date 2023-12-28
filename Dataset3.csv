@@ -1,0 +1,296 @@
+Temperature,Humidity,Rainfall,Soil,Crop,Fertilizer
+"24,87","82,84","295,61",Clayey,rice,DAP
+"28,69","96,65","178,96",laterite,Coconut,Good NPK
+"20,27","81,64","270,44",silty clay,rice,MOP
+"25,07","95,02","192,9",sandy,Coconut,Urea
+"25,04","95,9","174,8",coastal,Coconut,Urea
+"20,82","84,13","230,22",clay loam,rice,Urea
+"25,95","93,41","172,05",alluvial,Coconut,Urea
+"26,49","80,16","242,86",Clayey,rice,DAP
+"25,01","95,59","165,81",coastal,Coconut,Urea
+"21,87","80,19","224,56",silty clay,rice,Urea
+"28,96","95,16","222,8",alluvial,Coconut,DAP
+"26,3","99,66","215,92",laterite,Coconut,DAP
+"27,51","94,19","156,67",sandy,Coconut,Good NPK
+"23,68","81,04","233,7",clay loam,rice,DAP
+"25,52","94,38","178,73",sandy,Coconut,Urea
+"25,79","82,11","243,51",Clayey,rice,Urea
+"24,28","80,3","231,09",silty clay,rice,DAP
+"26,59","90,99","178,81",coastal,Coconut,Urea
+"28,11","90,02","172,48",laterite,Coconut,Urea
+"28,36","91,65","160,73",alluvial,Coconut,Urea
+"26,4","81,06","223,37",clay loam,rice,MOP
+"21,72","80,24","277,96",Clayey,rice,DAP
+"28,28","93,65","171,95",sandy,Coconut,Good NPK
+"21,97","81,9","227,36",silty clay,rice,DAP
+"28,97","98,1","213,9",coastal,Coconut,Urea
+"27,13","95,24","204,72",laterite,Coconut,DAP
+"27,08",97,"171,76",alluvial,Coconut,Urea
+"27,31","99,97","201,83",clay loam,rice,Urea
+"26,53","81,42","264,61",Clayey,rice,MOP
+"20,28","82,12","191,95",sandy,Coconut,Urea
+"24,89","81,98","185,95",silty clay,rice,Urea
+"25,79","93,84","152,42",coastal,Coconut,Good NPK
+"29,71","96,3","209,85",alluvial,Coconut,MOP
+"25,1","92,36","157,76",laterite,Coconut,Urea
+"26,54","84,67","183,62",clay loam,rice,DAP
+"22,73","82,17","260,89",Clayey,rice,DAP
+"27,59","92,49","162,84",sandy,Coconut,Good NPK
+"24,53","82,74","224,68",silty clay,rice,DAP
+"28,48","97,77","160,39",coastal,Coconut,Urea
+"25,55","96,93","191,3",laterite,Coconut,DAP
+"28,88","95,11","145,06",alluvial,Coconut,Urea
+"26,09","80,38","182,9",clay loam,rice,Good NPK
+"20,13","81,6","262,72",Clayey,rice,MOP
+"28,39","99,19","189,67",sandy,Coconut,Urea
+"23,43","83,06","219,9",silty clay,rice,DAP
+"24,96","84,48","196,96",coastal,Coconut,DAP
+"27,54","94,59","150,2",laterite,Coconut,Good NPK
+"27,57","94,9","145,93",alluvial,Coconut,Urea
+"29,87","91,15","192,77",clay loam,rice,Good NPK
+"21,77","80,32","226,66",Clayey,rice,Urea
+"27,06","91,11","224,7",sandy,Coconut,DAP
+"23,79","80,42","206,26",silty clay,rice,Urea
+"28,13","95,65","151,08",coastal,Coconut,Urea
+"27,31","99,97","201,83",laterite,Coconut,Urea
+"29,29","91,96","132,15",alluvial,Coconut,Urea
+"26,29","84,57","257,49",clay loam,rice,Urea
+"25,76","83,52","245,66",Clayey,rice,DAP
+"27,64","99,35","157,92",sandy,Coconut,Good NPK
+"22,68","83,73","200,91",silty clay,rice,DAP
+"28,74","93,4","156,77",coastal,Coconut,Urea
+"26,61","96,97","191,01",laterite,Coconut,DAP
+"25,76","94,66","131,25",alluvial,Coconut,Urea
+"26,92","91,2","194,9",clay loam,rice,Good NPK
+"23,98","81,45","250,08",Clayey,rice,MOP
+"28,06","98,37","171,65",sandy,Coconut,Urea
+"22,68","83,46","194,27",silty clay,rice,DAP
+"25,85","90,93","147,89",coastal,Coconut,Good NPK
+"27,19","92,2","141,32",laterite,Coconut,Urea
+"26,45","93,45","149,22",alluvial,Coconut,Urea
+"23,36","83,6","188,41",clay loam,rice,Urea
+"29,13","91,31","157,24",sandy,Coconut,Good NPK
+"20,41","82,21","245,15",Clayey,rice,MOP
+"25,6","80,15","200,83",silty clay,rice,MOP
+"29,7","95,21","148,3",coastal,Coconut,Urea
+"28,3","95,41","182,45",laterite,Coconut,DAP
+"23,86","82,23","195,09",alluvial,Coconut,Urea
+"26,93","81,91","290,68",clay loam,rice,Urea
+"26,92","99,85","225,63",sandy,Coconut,Urea
+"20,28","82,89","241,97",Clayey,rice,MOP
+"29,26","95,11","184,76",silty clay,rice,DAP
+"27,8","99,65","181,69",coastal,Coconut,DAP
+"27,01","96,46","144,33",laterite,Coconut,DAP
+"25,07","93,31","134,84",alluvial,Coconut,Urea
+"26,04","84,97","186,75",clay loam,rice,Urea
+"27,1","93,7","150,95",sandy,Coconut,Good NPK
+"20,88",82,"202,94",Clayey,rice,Urea
+"21,14","80,34","198,67",silty clay,rice,Urea
+"28,83","92,17","145,42",coastal,Coconut,Good NPK
+"27,75","95,95","131,09",laterite,Coconut,Urea
+"26,14","93,28","195,41",clay loam,rice,Good NPK
+"29,18","92,73","204,96",alluvial,Coconut,Urea
+"26,38","91,5","167,05",sandy,Coconut,Urea
+"28,27","96,94","198,82",Clayey,rice,DAP
+"26,58","95,79","171,63",coastal,Coconut,MOP
+"26,31","82,37","265,54",silty clay,rice,DAP
+"24,01","82,06","185,28",laterite,Coconut,Urea
+"26,73","81,79","280,4",clay loam,rice,DAP
+"28,44","95,88","203,93",sandy,Coconut,MOP
+"21,33","80,47","185,5",Clayey,rice,DAP
+"25,95","94,74","144,16",coastal,Coconut,Urea
+"22,78","82,07","248,72",silty clay,rice,DAP
+"29,03","90,79","205,57",laterite,Coconut,Urea
+"25,61","94,31","224,32",alluvial,Coconut,Urea
+"22,23","81,86","278,08",clay loam,rice,DAP
+"28,99","90,74","148,84",sandy,Coconut,Good NPK
+"24,9","80,53","183,68",Clayey,rice,DAP
+"27,15","91,49","164,92",coastal,Coconut,Urea
+"25,08","80,52",257,silty clay,rice,DAP
+"25,57","97,61","199,79",laterite,Coconut,Good NPK
+"25,28","80,54","220,12",clay loam,rice,Urea
+"27,56","99,98","174,63",sandy,Coconut,MOP
+"21,32",83,"192,32",Clayey,rice,Urea
+"25,52","94,33","135,13",coastal,Coconut,MOP
+"24,53","80,54","260,26",silty clay,rice,DAP
+"22,09","83,47","231,74",clay loam,rice,Good NPK
+"26,76","92,86","224,59",laterite,Coconut,Urea
+"27,46","92,91","142,14",coastal,Coconut,Urea
+"25,43","82,95","195,36",silty clay,rice,Good NPK
+"23,84","83,88","241,2",clay loam,rice,Urea
+"28,84","99,64","224,4",laterite,Coconut,Urea
+"29,18","90,27","188,93",Clayey,rice,Urea
+"26,93","98,8","166,57",sandy,Coconut,DAP
+"29,52","92,56","131,21",coastal,Coconut,Good NPK
+"21,67","80,71","210,81",silty clay,rice,Urea
+"28,44","91,81","145,54",sandy,Coconut,Good NPK
+"25,49","81,41","182,65",Clayey,rice,DAP
+"26,14","96,39","131,34",coastal,Coconut,MOP
+"22,3","80,64","197,98",silty clay,rice,Urea
+"26,8","82,15","193,35",sandy,Coconut,Urea
+"24,46","82,75","182,56",coastal,Coconut,Urea
+"23,06","83,37","251,05",Clayey,rice,Urea
+"26,36","84,04","271,36",silty clay,rice,DAP
+"23,64","80,29","263,11",Clayey,rice,Urea
+"22,18","80,33","200,09",coastal,Coconut,Urea
+"20,05","80,35","208,58",silty clay,rice,Urea
+"26,11","91,52","134,13",sandy,Coconut,Urea
+"25,03","91,54","179,82",sandy,Coconut,DAP
+"25,55","91,64","212,87",coastal,Coconut,Urea
+"24,98","83,89","204,8",Clayey,rice,Good NPK
+"20,78","84,5","240,08",silty clay,rice,Urea
+"29,53","91,91","194,31",Clayey,rice,Good NPK
+"28,94",93,"191,77",sandy,Coconut,MOP
+"29,38","93,28","218,52",coastal,Coconut,Urea
+"23,24","84,59","233,05",silty clay,rice,Urea
+"26,53","80,12","218,92",Clayey,rice,Urea
+"24,64","80,41","253,72",silty clay,rice,Urea
+"29,57","91,41","224,83",coastal,Coconut,Urea
+"26,52","98,38","144,63",sandy,Coconut,Good NPK
+"26,31","98,62","208,12",coastal,Coconut,DAP
+"26,46","83,86","248,23",Clayey,rice,DAP
+"25,74","83,88","233,13",silty clay,rice,Urea
+"28,29",97,"142,94",sandy,Coconut,Good NPK
+"25,39","98,09","218,08",coastal,Coconut,Urea
+"23,45","84,79","283,93",silty clay,rice,Urea
+"22,71","82,64","271,32",Clayey,rice,Urea
+"23,43","80,57","269,5",Clayey,rice,Urea
+"25,67","80,66","209,59",silty clay,rice,Urea
+"26,51","94,48","199,88",sandy,Coconut,Good NPK
+26,"94,8","209,54",coastal,Coconut,Urea
+"26,45","98,3","221,23",coastal,Coconut,Good NPK
+"29,01","94,01","150,05",sandy,Coconut,MOP
+"21,45","84,94","272,2",silty clay,rice,Urea
+"20,62","83,77","279,55",Clayey,rice,Good NPK
+"26,8","80,89","284,44",Clayey,rice,Urea
+"21,95","80,97","213,36",silty clay,rice,Urea
+"27,64","95,49","205,55",sandy,Coconut,Good NPK
+"29,7","95,66","215,2",coastal,Coconut,Good NPK
+"21,84","80,73","202,38",Clayey,rice,Good NPK
+"26,76","81,18","272,3",silty clay,rice,DAP
+"26,87","91,73","214,41",coastal,Coconut,Good NPK
+"28,03","95,02","218,01",sandy,Coconut,Urea
+"29,2","95,67","211,25",sandy,Coconut,Good NPK
+"23,48","81,33","224,06",silty clay,rice,Urea
+"26,88","81,46","194,58",coastal,Coconut,Urea
+"21,53","82,14","295,92",Clayey,rice,Urea
+"21,59","82,79","276,66",silty clay,rice,DAP
+"22,7","82,81",257,Clayey,rice,DAP
+"28,57","95,68","134,84",sandy,Coconut,DAP
+"21,02","82,95","298,4",silty clay,rice,Urea
+"23,22","83,03","221,21",Clayey,rice,Urea
+"27,02","95,72","147,17",sandy,Coconut,Urea
+23,"82,32","263,96",Clayey,rice,DAP
+"21,05","82,68","233,11",silty clay,rice,Urea
+"24,44","82,45","267,98",Clayey,rice,Urea
+"25,16","83,12","231,38",silty clay,rice,Urea
+"27,15","96,66","149,24",sandy,Coconut,Urea
+"23,86","83,15","285,25",silty clay,rice,DAP
+"20,08","83,29","263,64",Clayey,rice,Urea
+"26,07","96,7","143,53",sandy,Coconut,Urea
+"26,19","96,97","135,42",sandy,Coconut,DAP
+"21,41","83,33","287,58",Clayey,rice,Urea
+"25,63","83,53","209,9",silty clay,rice,Urea
+"24,52","83,54","230,45",Clayey,rice,Urea
+"23,58","83,59","291,3",silty clay,rice,DAP
+"25,66","83,47","217,38",Clayey,rice,Urea
+"24,17","83,73","257,03",silty clay,rice,Urea
+"26,23","83,84","286,51",silty clay,rice,DAP
+"23,83","84,81","298,56",silty clay,rice,Urea
+"24,87","82,84","295,61",Clayey,rice,MOP
+"28,96","95,16","222,8",alluvial,Coconut,MOP
+"23,68","81,04","233,7",clay loam,rice,MOP
+"21,72","80,24","277,96",Clayey,rice,MOP
+"26,54","84,67","183,62",clay loam,rice,MOP
+"22,73","82,17","260,89",Clayey,rice,MOP
+"23,43","83,06","219,9",silty clay,rice,MOP
+"25,76","83,52","245,66",Clayey,rice,MOP
+"22,68","83,73","200,91",silty clay,rice,MOP
+"26,61","96,97","191,01",laterite,Coconut,MOP
+"22,68","83,46","194,27",silty clay,rice,MOP
+"28,3","95,41","182,45",laterite,Coconut,MOP
+"27,01","96,46","144,33",laterite,Coconut,MOP
+"28,27","96,94","198,82",Clayey,rice,MOP
+"26,31","82,37","265,54",silty clay,rice,MOP
+"25,49","81,41","182,65",Clayey,rice,MOP
+"25,03","91,54","179,82",sandy,Coconut,MOP
+"26,31","98,62","208,12",coastal,Coconut,MOP
+"25,07","95,02","192,9",sandy,Coconut,DAP
+"26,59","90,99","178,81",coastal,Coconut,DAP
+"28,11","90,02","172,48",laterite,Coconut,DAP
+"27,08",97,"171,76",alluvial,Coconut,DAP
+"20,28","82,12","191,95",sandy,Coconut,DAP
+"24,89","81,98","185,95",silty clay,rice,DAP
+"28,88","95,11","145,06",alluvial,Coconut,DAP
+"28,39","99,19","189,67",sandy,Coconut,DAP
+"28,13","95,65","151,08",coastal,Coconut,DAP
+"29,29","91,96","132,15",alluvial,Coconut,DAP
+"25,76","94,66","131,25",alluvial,Coconut,DAP
+"27,19","92,2","141,32",laterite,Coconut,DAP
+"29,7","95,21","148,3",coastal,Coconut,DAP
+"26,38","91,5","167,05",sandy,Coconut,DAP
+"29,03","90,79","205,57",laterite,Coconut,DAP
+"25,61","94,31","224,32",alluvial,Coconut,DAP
+"23,84","83,88","241,2",clay loam,rice,DAP
+"21,67","80,71","210,81",silty clay,rice,DAP
+"26,8","82,15","193,35",sandy,Coconut,DAP
+"23,64","80,29","263,11",Clayey,rice,DAP
+"22,18","80,33","200,09",coastal,Coconut,DAP
+"26,11","91,52","134,13",sandy,Coconut,DAP
+"25,55","91,64","212,87",coastal,Coconut,DAP
+"29,38","93,28","218,52",coastal,Coconut,DAP
+"23,24","84,59","233,05",silty clay,rice,DAP
+"26,53","80,12","218,92",Clayey,rice,DAP
+"29,57","91,41","224,83",coastal,Coconut,DAP
+"25,74","83,88","233,13",silty clay,rice,DAP
+"25,39","98,09","218,08",coastal,Coconut,DAP
+"23,43","80,57","269,5",Clayey,rice,DAP
+"21,45","84,94","272,2",silty clay,rice,DAP
+"23,48","81,33","224,06",silty clay,rice,DAP
+"26,88","81,46","194,58",coastal,Coconut,DAP
+"21,02","82,95","298,4",silty clay,rice,DAP
+"21,05","82,68","233,11",silty clay,rice,DAP
+"24,44","82,45","267,98",Clayey,rice,DAP
+"27,15","96,66","149,24",sandy,Coconut,DAP
+"24,17","83,73","257,03",silty clay,rice,DAP
+"25,04","95,9","174,8",coastal,Coconut,MOP
+"25,95","93,41","172,05",alluvial,Coconut,MOP
+"25,01","95,59","165,81",coastal,Coconut,MOP
+"25,52","94,38","178,73",sandy,Coconut,MOP
+"28,36","91,65","160,73",alluvial,Coconut,MOP
+"25,1","92,36","157,76",laterite,Coconut,MOP
+"28,48","97,77","160,39",coastal,Coconut,MOP
+"27,57","94,9","145,93",alluvial,Coconut,MOP
+"28,74","93,4","156,77",coastal,Coconut,MOP
+"28,06","98,37","171,65",sandy,Coconut,MOP
+"23,36","83,6","188,41",clay loam,rice,MOP
+"23,86","82,23","195,09",alluvial,Coconut,MOP
+"25,07","93,31","134,84",alluvial,Coconut,MOP
+"26,04","84,97","186,75",clay loam,rice,MOP
+"29,18","92,73","204,96",alluvial,Coconut,MOP
+"24,01","82,06","185,28",laterite,Coconut,MOP
+"25,95","94,74","144,16",coastal,Coconut,MOP
+"25,28","80,54","220,12",clay loam,rice,MOP
+"26,76","92,86","224,59",laterite,Coconut,MOP
+"27,46","92,91","142,14",coastal,Coconut,MOP
+"28,84","99,64","224,4",laterite,Coconut,MOP
+"22,3","80,64","197,98",silty clay,rice,MOP
+"24,46","82,75","182,56",coastal,Coconut,MOP
+"20,05","80,35","208,58",silty clay,rice,MOP
+"20,78","84,5","240,08",silty clay,rice,MOP
+"24,64","80,41","253,72",silty clay,rice,MOP
+"23,45","84,79","283,93",silty clay,rice,MOP
+"25,67","80,66","209,59",silty clay,rice,MOP
+26,"94,8","209,54",coastal,Coconut,MOP
+"26,8","80,89","284,44",Clayey,rice,MOP
+"21,95","80,97","213,36",silty clay,rice,MOP
+"28,03","95,02","218,01",sandy,Coconut,MOP
+"23,22","83,03","221,21",Clayey,rice,MOP
+"27,02","95,72","147,17",sandy,Coconut,MOP
+"25,16","83,12","231,38",silty clay,rice,MOP
+"20,08","83,29","263,64",Clayey,rice,MOP
+"26,07","96,7","143,53",sandy,Coconut,MOP
+"25,63","83,53","209,9",silty clay,rice,MOP
+"24,52","83,54","230,45",Clayey,rice,MOP
+"25,66","83,47","217,38",Clayey,rice,MOP
+"23,83","84,81","298,56",silty clay,rice,MOP
