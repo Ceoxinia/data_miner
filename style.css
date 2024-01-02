@@ -1,0 +1,19 @@
+.dropdown-label {
+    font-size: 1.2em;
+    color: #e2f3f9;
+    margin-bottom: 0.5em;
+}
+
+.dropdown-container {
+    margin-bottom: 1em;
+}
+
+.parameter-label {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 0.3em;
+}
+
+.parameter-container {
+    margin-bottom: 1em;
+}

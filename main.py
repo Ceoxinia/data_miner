@@ -6,10 +6,13 @@ import numpy as np
 from itertools import combinations
 from tabulate import tabulate
 import json
+import base64
 
 import pandas as pd
 import os
 
+from classclus import execute_kmeans
+from classclus import execute_dbscan
 
 df1 = pd.read_csv('Dataset1.csv')
 df2 = pd.read_csv('Dataset2.csv')
@@ -233,13 +236,85 @@ def generate_association_rules(Lk, min_conf, transactions):
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = Dash(__name__, external_stylesheets=external_stylesheets)
+
+app = Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+
+clustering_algorithms = [
+    {'label': 'K-Means', 'value': 'kmeans'},
+    {'label': 'DBSCAN', 'value': 'dbscan'}
+]
+
+k_options = [
+    {'label': '2', 'value': 2},
+    {'label': '3', 'value': 3},
+    {'label': '4', 'value': 4},
+    {'label': '5', 'value': 5}
+]
+
+iter_options = [
+    {'label': '50', 'value': 50},
+    {'label': '100', 'value': 100},
+    {'label': '150', 'value': 150},
+    {'label': '200', 'value': 200}
+]
+
+conv_options = [
+    {'label': '0.01', 'value': 0.01},
+    {'label': '0.001', 'value': 0.001},
+    {'label': '0.0001', 'value': 0.0001}
+]
+
+clasification_algorithms = [
+    {'label': 'K-NN', 'value': 'Knn'},
+    {'label': 'Decision-Trees', 'value': 'DecisinT'},
+    {'label': 'Random-Forest', 'value': 'RandomF'}
+]
+
+k_nn_options = [
+    {'label': '2', 'value': 2},
+    {'label': '3', 'value': 3},
+    {'label': '4', 'value': 4},
+    {'label': '5', 'value': 5}
+]
+
+k_nn_dictance = [
+    {'label': 'euclidean', 'value': 'euclidean'},
+    {'label': 'manhattan', 'value': 'manhattan'},
+    {'label': 'chebyshev', 'value': 'chebyshev'},
+    {'label': 'cosine', 'value': 'cosine'}
+]
+
+rf_estim = [
+    {'label': '5', 'value': 5},
+    {'label': '10', 'value': 10},
+    {'label': '15', 'value': 15},
+    {'label': '20', 'value': 20}
+]
+
+esp_options = [
+    {'label': '0.4', 'value': 0.4},
+    {'label': '0.5', 'value': 0.5},
+    {'label': '0.6', 'value': 0.6}
+]
+
+voisin_options = [
+    {'label': '2', 'value': 2},
+    {'label': '4', 'value': 4},
+    {'label': '6', 'value': 6}
+]
+
 
 app.layout = html.Div([
+
+
     html.Div([
-        html.H1("Data Mining Project",style={'color': 'blue'}),
+        html.Div([
+        html.H2("Data Mining Project", style={'color': '#193d8b', 'textAlign': 'center'}),
+           
+        ]),
         
         # Dataset selection dropdown
+        html.H5('Select Dataset', style={'color':'#656668','margin-left': '20px'}),
         dcc.Dropdown(
             id='data-dropdown',
             options=[
@@ -248,12 +323,17 @@ app.layout = html.Div([
                 {'label': 'Dataset 3', 'value': 'df3'}
             ],
             value='df1',  # default selection
-            style={'width': '50%'}
+            style={
+            'width': '100%',
+            'color': '#193d8b',  # Couleur du texte
+            'backgroundColor': '#87ceeb',  # Couleur de fond
+            'borderColor': '#193d8b'  # Couleur de la bordure
+        }
         ),
         
         # Cleaning methods dropdowns and button
         html.Div([
-            html.H5('Select Outliers Handling Method'),
+            html.H6('Select Outliers Handling Method',style={'color':'#656668','margin-left': '20px'}),
             dcc.Dropdown(
                 id='outlier-dropdown',
                 options=[
@@ -262,9 +342,14 @@ app.layout = html.Div([
                     {'label': 'Mode', 'value': 'mode'}
                 ],
                 value='mean',
-                style={'width': '50%'}
+                style={
+            'width': '100%',
+            'color': '#193d8b',  # Couleur du texte
+            'backgroundColor': '#87ceeb',  # Couleur de fond
+            'borderColor': '#193d8b'  # Couleur de la bordure
+            }
             ),
-            html.H5('Select Missing Values Handling Method'),
+            html.H6('Select Missing Values Handling Method',style={'color':'#656668','margin-left': '20px'}),
             dcc.Dropdown(
                 id='missing-dropdown',
                 options=[
@@ -273,11 +358,16 @@ app.layout = html.Div([
                     {'label': 'Mode', 'value': 'mode'}
                 ],
                 value='mean',
-                style={'width': '50%'}
+                style={
+            'width': '100%',
+            'color': '#193d8b',  # Couleur du texte
+            'backgroundColor': '#87ceeb',  # Couleur de fond
+            'borderColor': '#193d8b'  # Couleur de la bordure
+            }
             ),
         ]),
         html.Div([
-        html.H5('Normalization Method'),
+        html.H6('Normalization Method',style={'color':'#656668','margin-left': '20px'}),
         dcc.Dropdown(
             id='normalization-method-dropdown',
             options=[
@@ -285,11 +375,16 @@ app.layout = html.Div([
                 {'label': 'Z-Score', 'value': 'z-score'}
             ],
             value='min-max',  # Default selection
-            style={'width': '50%'}
+            style={
+            'width': '100%',
+            'color': '#193d8b',  # Couleur du texte
+            'backgroundColor': '#87ceeb',  # Couleur de fond
+            'borderColor': '#193d8b'  # Couleur de la bordure
+         }
         ),
         ]),
         html.Div([
-        html.H5('Discretization Method For Dataset3'),
+        html.H6('Discretization Method For Dataset3',style={'color':'#656668','margin-left': '20px'}),
         dcc.Dropdown(
             id='discretization-method-dropdown',
             options=[
@@ -297,19 +392,30 @@ app.layout = html.Div([
                 {'label': 'Equal Frequency', 'value': 'equal_frequency'}
             ],
             value='equal_width',  # Default selection
-            style={'width': '50%'}
+            style={
+            'width': '100%',
+            'color': '#193d8b',  # Couleur du texte
+            'backgroundColor': '#87ceeb',  # Couleur de fond
+            'borderColor': '#193d8b'  # Couleur de la bordure
+         }
         ),
     ]),
-    ], style={'width': '30%', 'float': 'left', 'background-color': 'lightgrey'}),
+    ], style={'width': '40%', 'float': 'left','margin-left': '10px','margin-right': '70px'}),
     
+
+
     html.Div([
         html.Div(id='output-data-upload'),
         html.Div(id='data-summary'),
+        #dcc.Graph(id='boxplot'),
+        #dcc.Graph(id='histogram'),
+        #dcc.Graph(id='correlation-matrix'),  # New graph for correlation matrix
+    ], style={'display': 'flex', 'flexWrap': 'wrap'}),
+    html.Div([
         dcc.Graph(id='boxplot'),
         dcc.Graph(id='histogram'),
-        dcc.Graph(id='correlation-matrix'),  # New graph for correlation matrix
-    ], style={'display': 'flex', 'flexWrap': 'wrap'}),
-    
+        dcc.Graph(id='correlation-matrix'),
+    ], style={'display': 'flex', 'flexDirection': 'row'}),
     html.Div([
         html.H5('Cleaned DataFrame'),
         dash_table.DataTable(id='cleaned-table',
@@ -343,8 +449,121 @@ app.layout = html.Div([
         ],
         style_table={'height': '400px', 'overflowY': 'auto'}
     ),
-])
+]),
 
+html.Hr(style={'color': '#193d8b', 'background-color': '#193d8b', 'height': '2px'}),
+
+    # Classification algorithm selection dropdown
+    
+    html.Div([
+        html.H5('Select Classification Algorithm', className='dropdown-label',style={'color':'#656668','margin-left': '20px'}),
+        dcc.Dropdown(
+            id='classification-algorithm-dropdown',
+            options=clasification_algorithms,
+            value='Knn',  # default selection
+            #style={'width': '35%'},
+            style={
+            'width': '100%',
+            'color': '#193d8b',  # Couleur du texte
+            'backgroundColor': '#87ceeb',  # Couleur de fond
+            'borderColor': '#193d8b',  # Couleur de la bordure
+            'box-shadow': '0px 0px 5px 1px #193d8b'
+            }
+        ),
+    ], className='dropdown-container',style={'width': '40%'}),
+
+    html.Div([
+        html.H5('K-nn Parameters', className='parameter-label', style={'color': '#031b4b', 'margin-top': '10px', 'font-style': 'italic'}),
+        dcc.Dropdown(
+            id='k-nn-input',
+            options=k_nn_options,
+            placeholder='Enter k',
+            style={'width': '40%'},
+        ),
+        dcc.Dropdown(
+            id='distance-metric',
+            options=k_nn_dictance,
+            placeholder='Enter distance',
+            style={'width': '40%'}
+        ),
+    ], id='knn-parameters', style={'display': 'block','margin-top': '20px', 'padding': '10px', 'border': '1px solid #193d8b', 'border-radius': '5px'}, className='parameter-container'),
+
+    html.Div([
+        html.H5('Random Forest Parameters', className='parameter-label',style={'color': '#031b4b', 'margin-top': '10px', 'font-style': 'italic'}),
+        dcc.Dropdown(
+            id='estim-input',
+            options=rf_estim,
+            placeholder='Enter estimation',
+            style={'width': '40%'}
+        ),
+    ], id='rf-parameters', style={'display': 'block','margin-top': '20px', 'padding': '10px', 'border': '1px solid #193d8b', 'border-radius': '5px'}, className='parameter-container'),
+
+    html.Hr(style={'color': '#193d8b', 'background-color': '#193d8b', 'height': '2px'}),
+
+    # Clustering algorithm selection dropdown
+    html.Div([
+        html.H5('Select Clustering Algorithm', className='dropdown-label',style={'color':'#656668','margin-left': '20px'}),
+        dcc.Dropdown(
+            id='clustering-algorithm-dropdown',
+            options=clustering_algorithms,
+            value='kmeans',  # default selection
+            #style={'width': '35%'},
+            style={
+            'width': '100%',
+            'color': '#193d8b',  # Couleur du texte
+            'backgroundColor': '#87ceeb',  # Couleur de fond
+            'borderColor': '#193d8b',  # Couleur de la bordure
+            'box-shadow': '0px 0px 5px 1px #193d8b'
+            }
+        ),
+    ], className='dropdown-container',style={'width': '40%'}),
+
+    html.Div([
+        html.H5('K-Means Parameters', className='parameter-label',style={'color': '#031b4b', 'margin-top': '10px', 'font-style': 'italic'}),
+        dcc.Dropdown(
+            id='k-input',
+            options=k_options,
+            placeholder='Enter k',
+            style={'width': '40%'}
+        ),
+        dcc.Dropdown(
+            id='n-iterations-input',
+            options=iter_options,
+            placeholder='Enter iteration',
+            style={'width': '40%'}
+        ),
+        dcc.Dropdown(
+            id='convergence-input',
+            options=conv_options,
+            placeholder='Enter convergence',
+            style={'width': '40%'}
+        ),
+    ], id='kmeans-parameters', style={'display': 'block','margin-top': '20px', 'padding': '10px', 'border': '1px solid #193d8b', 'border-radius': '5px'}, className='parameter-container'),
+
+    html.Div([
+        html.H5('DBSCAN Parameters', className='parameter-label',style={'color': '#031b4b', 'margin-top': '10px', 'font-style': 'italic'}),
+        dcc.Dropdown(
+            id='eps-input',
+            options=esp_options,
+            placeholder='Enter eps',
+            style={'width': '40%'}
+        ),
+        dcc.Dropdown(
+            id='min-samples-input',
+            options=voisin_options,
+            placeholder='Enter min samples',
+            style={'width': '40%'}
+        ),
+    ], id='dbscan-parameters', style={'display': 'block','margin-top': '20px', 'padding': '10px', 'border': '1px solid #193d8b', 'border-radius': '5px'}, className='parameter-container'),
+
+
+    #html.Button('Reset', id='reset-button', n_clicks=0),
+
+
+    html.Div([
+        html.H5('Resulting Image from K-Means Clustering',style={'color':'#656668','margin-left': '20px'}),
+        html.Img(id='kmeans-result-image', style={'width': '50%'})
+    ]),
 ])
 
 
@@ -356,62 +575,155 @@ def get_selected_dataframe(selected_data):
     elif selected_data == 'df3':
         return df3
 
-@app.callback([Output('output-data-upload', 'children'),
-               Output('data-summary', 'children'),
-               Output('boxplot', 'figure'),
-               Output('histogram', 'figure'),
-               Output('correlation-matrix', 'figure'),
-               Output('cleaned-table', 'data'),
-               Output('cleaned-boxplot', 'figure'),
-               Output('cleaned-histogram', 'figure'),
-               Output('normalized-table', 'data'),
-               Output('image-section', 'children'),
-               Output('discretization-table', 'data'),
-               Output('association-rules-table', 'data')],  # Add this Output for image section
-              [Input('data-dropdown', 'value'),
-               Input('discretization-method-dropdown', 'value'),
-               ],
-              [State('outlier-dropdown', 'value'),
-               State('missing-dropdown', 'value'),
-               State('normalization-method-dropdown', 'value')])
-def update_output(selected_data,selected_discretization_method, selected_outliers, selected_missing,selected_normalization_method):
+@app.callback(
+    [
+        Output('output-data-upload', 'children'),
+        Output('data-summary', 'children'),
+        Output('boxplot', 'figure'),
+        Output('histogram', 'figure'),
+        Output('correlation-matrix', 'figure'),
+        Output('cleaned-table', 'data'),
+        Output('cleaned-boxplot', 'figure'),
+        Output('cleaned-histogram', 'figure'),
+        Output('normalized-table', 'data'),
+        Output('image-section', 'children'),
+        Output('discretization-table', 'data'),
+        Output('association-rules-table', 'data'),
+        Output('kmeans-result-image', 'src'),
+        # Ajout de la sortie pour le bouton de réinitialisation
+        #Output('reset-button', 'n_clicks')
+    ],
+    [
+        Input('data-dropdown', 'value'),
+        Input('discretization-method-dropdown', 'value'),
+        Input('clustering-algorithm-dropdown', 'value'),
+        Input('k-input', 'value'),
+        Input('n-iterations-input', 'value'),
+        Input('convergence-input', 'value'),
+        Input('eps-input', 'value'),
+        Input('min-samples-input', 'value'),
+        #Input('reset-button', 'n_clicks'),  # Ajout de l'entrée pour le bouton de réinitialisation
+        State('outlier-dropdown', 'value'),
+        State('missing-dropdown', 'value'),
+        State('normalization-method-dropdown', 'value')
+    ]
+)
+def update_output(
+    selected_data, selected_discretization_method, selected_cluster,
+    selected_k, selected_iter, selected_converg, selected_eps, selected_minSample,
+      # Ajout de l'argument pour le bouton de réinitialisation
+    selected_outliers, selected_missing, selected_normalization_method,
+):
     df = get_selected_dataframe(selected_data)
+    # ... rest of the function
     df_numeric = df.apply(pd.to_numeric, errors='coerce')
     image_section = html.Div()
 
+    if selected_data=='df1':
+        d='Propriétés du Sol'
+    elif selected_data == 'df2':
+        d='COVID-19'
+    else:
+        d='Agriculture'        
     table = html.Div([
-        html.H5(f'Selected Dataset: {selected_data}'),
+        html.H5(f'Selected Dataset: {d}',style={'color':'#031b4b','textAlign': 'center','margin-top': '70px'}),
         dash_table.DataTable(
             df.to_dict('records'),
             columns=[{'name': i, 'id': i} for i in df.columns],
-            style_table={'height': '200px', 'overflowY': 'auto'}
+            style_table={'height': '360px','width': '90%','overflowY': 'auto','margin-top': '15px'},
+            style_cell={
+            'textAlign': 'center',
+            'backgroundColor': '#f0f8ff',  # Couleur de fond des cellules
+            'color': '#031b4b'  # Couleur du texte des cellules
+             },
+             style_header={
+            'backgroundColor': '#87ceeb',  # Couleur de fond des en-têtes
+            'fontWeight': 'bold'  # Mise en gras du texte des en-têtes
+             }
         ),
     ])
 
+    table_style = {
+    'font-family': 'Arial, sans-serif',
+    'border-collapse': 'collapse',
+    'width': '100%',
+    'margin-top': '10px',
+    }
+
+    # Créer un style pour les cellules de la DataTable
+    cell_style = {
+        'border': '3px solid #dddddd',
+        'text-align': 'left',
+        'padding': '8px',
+        'fontWeight': 'bold',
+    }
+
+    conditional_style = [
+    {
+        'if': {'row_index': 'odd'},
+        'backgroundColor': '#e6f7ff',  # Bleu clair
+    }
+    ]
     summary = html.Div([
-        html.Hr(),
-        html.H5('DataFrame Summary'),
+    html.Hr(style={'color': '#193d8b', 'background-color': '#193d8b', 'height': '2px'}),
+    
+    html.H5('DataFrame Summary', style={'color': '#031b4b', 'textAlign': 'center', 'margin-bottom': '20px'}),
+    html.Div([
         html.Div([
-            html.Div([
-                html.H6('Description des columns:'),
-                dcc.Markdown(f'```\n{get_column_description(df)}\n```')
-            ], style={'width': '60%', 'padding': '10px'}),
-            html.Div([
-                html.H6('Les Tendances Centrales:'),
-                dcc.Markdown(f'```\n{df.describe()}\n```')
-            ], style={'width': '60%', 'padding': '10px'})
-        ], style={'display': 'flex'})
-    ])
+            html.H6('Description des colonnes:', style={'color': '#031b4b', 'textAlign': 'center', 'margin-bottom': '20px'}),
+            dash_table.DataTable(
+                data=df.describe().to_dict('records'),
+                columns=[{'name': col, 'id': col} for col in df.describe().columns],
+                style_table=table_style,
+                style_cell=cell_style,
+                style_data_conditional=conditional_style,
+            ),
+        ], style={'width': '60%', 'padding': '20px', 'margin-right': '200px'}),  # Ajout de margin-right
+        html.Div([
+            html.H6('Les Tendances Centrales:', style={'color': '#031b4b', 'textAlign': 'center', 'margin-bottom': '20px'}),
+            dash_table.DataTable(
+                data=df.describe().transpose().reset_index().to_dict('records'),
+                columns=[{'name': col, 'id': col} for col in df.describe().transpose().reset_index().columns],
+                style_table=table_style,
+                style_cell=cell_style,
+                style_data_conditional=conditional_style,
+            ),
+        ], style={'width': '60%', 'padding': '20px'})
+    ], style={'display': 'flex', 'justify-content': 'flex-end'})
+])
 
     boxplot = px.box(df, y=df.select_dtypes(include=['number']).columns)
-    boxplot.update_layout(title_text='Boxplot of Numeric Columns')
+    boxplot.update_layout(
+    title_text='Boxplot of Numeric Columns',
+    xaxis_title='X-Axis Title',
+    yaxis_title='Y-Axis Title',
+    font=dict(family="Arial, sans-serif", size=12, color="#031b4b"),
+    paper_bgcolor='rgba(0,0,0,0)',  # Couleur de fond du graphique
+    plot_bgcolor='rgba(0,0,0,0)'  # Couleur de fond du tracé
+    )
 
     histogram = px.histogram(df, x=df.select_dtypes(include=['number']).columns, marginal="rug")
-    histogram.update_layout(title_text='Histogram of Numeric Columns')
+    histogram.update_layout(
+    title_text='Histogram of Numeric Columns',
+    xaxis_title='X-Axis Title',
+    yaxis_title='Y-Axis Title',
+    font=dict(family="Arial, sans-serif", size=12, color="#031b4b"),
+    paper_bgcolor='rgba(0,0,0,0)',
+    plot_bgcolor='rgba(0,0,0,0)'
+    )
+
 
     # Correlation matrix graph
     correlation_matrix = px.imshow(df_numeric.corr(), labels=dict(x='Columns', y='Columns'), x=df.columns, y=df.columns)
-    correlation_matrix.update_layout(title_text='Correlation Matrix')
+    correlation_matrix.update_layout(
+    title_text='Correlation Matrix',
+    xaxis_title='X-Axis Title',
+    yaxis_title='Y-Axis Title',
+    font=dict(family="Arial, sans-serif", size=12, color="#031b4b"),
+    paper_bgcolor='rgba(0,0,0,0)',
+    plot_bgcolor='rgba(0,0,0,0)'
+   )
+
 
     cleaned_df = clean_dataset(df, selected_missing, selected_outliers)
     cleaned_table_data = cleaned_df.to_dict('records')
@@ -467,10 +779,50 @@ def update_output(selected_data,selected_discretization_method, selected_outlier
         image_section = html.Div()
         discretized_table = []
         table_data =[]
-
+    image_path = ''
+    if selected_cluster == 'kmeans':
+        if selected_k is not None and selected_iter is not None and selected_converg is not None:
+            # Convertir les valeurs en entiers
+            selected_k = int(selected_k)
+            selected_iter = int(selected_iter)
+            selected_converg = float(selected_converg)
+            
+            print('avant')
+            # Appeler la fonction execute_kmeans avec les paramètres fournis
+            image_path = execute_kmeans(selected_k, selected_iter, selected_converg)
+            print('apres')
+    if selected_cluster == 'dbscan':
+        if selected_eps is not None and selected_minSample is not None:
+            # Convertir les valeurs en entiers
+            selected_eps = float(selected_eps)
+            selected_minSample = int(selected_minSample)
+            
+            print('avant 2')
+            # Appeler la fonction execute_dbscan avec les paramètres fournis
+            print(selected_eps)
+            print(selected_minSample)
+            image_path = execute_dbscan(selected_eps, selected_minSample)
+            print('apres 2')
+    # Convert the image to base64
+    if image_path:
+        with open(image_path, "rb") as image_file:
+            encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
+        # Set the image as a child of the `image-section`
+        image_section = html.Img(src=f'data:image/png;base64,{encoded_image}', style={'width': '50%'})
+    else:
+        print('vide')
+        #image_section = html.Div()
+   
     
+    return table, summary, boxplot, histogram, correlation_matrix, cleaned_table_data, cleaned_boxplot, cleaned_histogram, normalized_table_data, image_section, discretized_table, table_data, image_path
 
-    return table, summary, boxplot, histogram, correlation_matrix, cleaned_table_data, cleaned_boxplot, cleaned_histogram,normalized_table_data,image_section,discretized_table,table_data
+
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run_server(debug=True, use_reloader=False, threaded=False)
+
+
+
+
+    
