@@ -235,6 +235,13 @@ def generate_association_rules(Lk, min_conf, transactions):
     return association_rules
 
 
+def create_scatter_chart(x_axis="N", y_axis="K"):
+    return px.scatter(data_frame=df1, x=x_axis, y=y_axis, height=600)
+
+columns = ["N", "K", "EC", "OC", "S", "Zn", "Fe", "Cu", "Mn", 'B', 'OM', 'Fertility']
+x_axis = dcc.Dropdown(id="x_axis", options=columns, value="N", clearable=False)
+y_axis = dcc.Dropdown(id="y_axis", options=columns, value="K", clearable=False)
+
 #===========================App Layout======================================#
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -430,6 +437,8 @@ app.layout = html.Div([
     ], style={'width': '40%', 'float': 'left','margin-left': '10px','margin-right': '70px'}),
     
 
+   
+    
 
     html.Div([
         html.Div(id='output-data-upload'),
@@ -438,6 +447,15 @@ app.layout = html.Div([
         #dcc.Graph(id='histogram'),
         #dcc.Graph(id='correlation-matrix'),  # New graph for correlation matrix
     ], style={'display': 'flex', 'flexWrap': 'wrap'}),
+    
+    html.Div([
+    html.Br(),
+    "X-Axis", x_axis, 
+    "Y-Axis", y_axis,
+    
+    dcc.Graph(id="scatter",style={'backgroundColor': '#f0f0f0'}),
+    ]),
+    
     html.Div([
         dcc.Graph(id='boxplot'),
         dcc.Graph(id='histogram'),
@@ -668,7 +686,7 @@ def get_selected_dataframe(selected_data):
         return df3
 
 @app.callback(
-    [
+    [   Output("scatter", "figure"),
         Output('output-data-upload', 'children'),
         Output('data-summary', 'children'),
         Output('boxplot', 'figure'),
@@ -684,7 +702,7 @@ def get_selected_dataframe(selected_data):
         Output('kmeans-result-image', 'src'), #output-classification
         Output('output-classification', 'children'),
     ],
-    [
+    [   Input("x_axis", "value"),Input("y_axis", "value"),
         Input('data-dropdown', 'value'),
         Input('discretization-method-dropdown', 'value'),
         Input('clustering-algorithm-dropdown', 'value'), #classification-algorithm-dropdown
@@ -704,7 +722,7 @@ def get_selected_dataframe(selected_data):
     ]
 )
 def update_output(
-    selected_data, selected_discretization_method, selected_cluster, selected_clasification, arg,
+    x,y,selected_data, selected_discretization_method, selected_cluster, selected_clasification, arg,
     selected_k, selected_iter, selected_converg, selected_eps, selected_minSample,
       # Ajout de l'argument pour le bouton de réinitialisation
     selected_outliers, selected_missing, selected_normalization_method, selected_k_knn, selected_distance, selected_estimation,
@@ -931,7 +949,7 @@ def update_output(
                 resultat_class = 'The class associated with this instance is: '+str(f)
                 print(resultat_class)
 
-    return table, summary, boxplot, histogram, correlation_matrix, cleaned_table_data, cleaned_boxplot, cleaned_histogram, normalized_table_data, image_section, discretized_table, table_data, image_path, resultat_class
+    return create_scatter_chart(x, y),table, summary, boxplot, histogram, correlation_matrix, cleaned_table_data, cleaned_boxplot, cleaned_histogram, normalized_table_data, image_section, discretized_table, table_data, image_path, resultat_class
 
 
 
