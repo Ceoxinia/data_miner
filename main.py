@@ -7,12 +7,15 @@ from itertools import combinations
 from tabulate import tabulate
 import json
 import base64
+import dash_bootstrap_components as dbc
 
 import pandas as pd
 import os
 
 from classclus import execute_kmeans
 from classclus import execute_dbscan
+from classclus import execute_knn
+from classclus import execute_RF
 
 df1 = pd.read_csv('Dataset1.csv')
 df2 = pd.read_csv('Dataset2.csv')
@@ -303,13 +306,37 @@ voisin_options = [
     {'label': '6', 'value': 6}
 ]
 
+table_style = {
+    'font-family': 'Arial, sans-serif',
+    'border-collapse': 'collapse',
+    'width': '100%',
+    'margin-top': '10px',
+    }
 
+# Créer un style pour les cellules de la DataTable
+cell_style = {
+    'border': '3px solid #dddddd',
+    'text-align': 'left',
+    'padding': '8px',
+    'fontWeight': 'bold',
+}
 app.layout = html.Div([
 
+    html.Div(
+        className="header",
+        style={"backgroundColor": "#3c6382"},
+        children=[html.H2(
+            "Data Mining Project - Master 2 SII",
+            style={
+                "color": "white",
+                "padding": "30px 0 30px 0",
+                "textAlign": "center"}
+        )],
+    ),
 
     html.Div([
         html.Div([
-        html.H2("Data Mining Project", style={'color': '#193d8b', 'textAlign': 'center'}),
+        #html.H2("Data Mining Project", style={'color': '#193d8b', 'textAlign': 'center'}),
            
         ]),
         
@@ -417,9 +444,18 @@ app.layout = html.Div([
         dcc.Graph(id='correlation-matrix'),
     ], style={'display': 'flex', 'flexDirection': 'row'}),
     html.Div([
-        html.H5('Cleaned DataFrame'),
+        html.H5('Cleaned DataFrame',style={'color': '#031b4b', 'textAlign': 'center', 'margin-bottom': '20px'}),
         dash_table.DataTable(id='cleaned-table',
-        style_table={'height': '200px', 'overflowY': 'auto'})
+        style_table={'height': '360px','width': '100%','overflowY': 'auto','margin-top': '15px'},
+        style_cell={
+        'textAlign': 'center',
+        'backgroundColor': '#f0f8ff',  # Couleur de fond des cellules
+        'color': '#031b4b'  # Couleur du texte des cellules
+            },
+        style_header={
+        'backgroundColor': '#87ceeb',  # Couleur de fond des en-têtes
+        'fontWeight': 'bold'  # Mise en gras du texte des en-têtes
+        })
     ]),
     
     html.Div([
@@ -429,17 +465,35 @@ app.layout = html.Div([
     
     html.Div(id='image-section'),
     html.Div([
-    html.H5('Normalized DataFrame'),
+    html.H5('Normalized DataFrame',style={'color': '#031b4b', 'textAlign': 'center', 'margin-bottom': '20px'}),
     dash_table.DataTable(id='normalized-table',
-    style_table={'height': '200px', 'overflowY': 'auto'})    
+    style_table={'height': '360px','width': '100%','overflowY': 'auto','margin-top': '15px'},
+    style_cell={
+    'textAlign': 'center',
+    'backgroundColor': '#f0f8ff',  # Couleur de fond des cellules
+    'color': '#031b4b'  # Couleur du texte des cellules
+        },
+        style_header={
+    'backgroundColor': '#87ceeb',  # Couleur de fond des en-têtes
+    'fontWeight': 'bold'  # Mise en gras du texte des en-têtes
+    })    
 ]),
     html.Div([
-    html.H5('Descritisized DataFrame'),
+    html.H5('Descritisized DataFrame',style={'color': '#031b4b', 'textAlign': 'center', 'margin-bottom': '20px'}),
     dash_table.DataTable(id='discretization-table',
-    style_table={'height': '200px', 'overflowY': 'auto'})    
+    style_table={'height': '360px','width': '100%','overflowY': 'auto','margin-top': '15px'},
+    style_cell={
+    'textAlign': 'center',
+    'backgroundColor': '#f0f8ff',  # Couleur de fond des cellules
+    'color': '#031b4b'  # Couleur du texte des cellules
+        },
+        style_header={
+    'backgroundColor': '#87ceeb',  # Couleur de fond des en-têtes
+    'fontWeight': 'bold'  # Mise en gras du texte des en-têtes
+    })    
 ]),
     html.Div([
-    html.H5('Association Rules Table'),
+    html.H5('Association Rules Table',style={'color': '#031b4b', 'textAlign': 'center', 'margin-bottom': '20px'}),
     dash_table.DataTable(
         id='association-rules-table',
         columns=[
@@ -447,7 +501,16 @@ app.layout = html.Div([
             {'name': 'Min Confidence', 'id': 'Min Confidence'},
             {'name': 'Association Rules', 'id': 'Association Rules'},
         ],
-        style_table={'height': '400px', 'overflowY': 'auto'}
+        style_table={'height': '360px','width': '100%','overflowY': 'auto','margin-top': '15px'},
+        style_cell={
+        'textAlign': 'left',
+        'backgroundColor': '#f0f8ff',  # Couleur de fond des cellules
+        'color': '#031b4b'  # Couleur du texte des cellules
+            },
+            style_header={
+        'backgroundColor': '#87ceeb',  # Couleur de fond des en-têtes
+        'fontWeight': 'bold'  # Mise en gras du texte des en-têtes
+        }
     ),
 ]),
 
@@ -460,7 +523,7 @@ html.Hr(style={'color': '#193d8b', 'background-color': '#193d8b', 'height': '2px
         dcc.Dropdown(
             id='classification-algorithm-dropdown',
             options=clasification_algorithms,
-            value='Knn',  # default selection
+            value='',  # default selection
             #style={'width': '35%'},
             style={
             'width': '100%',
@@ -471,6 +534,22 @@ html.Hr(style={'color': '#193d8b', 'background-color': '#193d8b', 'height': '2px
             }
         ),
     ], className='dropdown-container',style={'width': '40%'}),
+
+    html.Div([
+    html.H5('Select Your Instance', className='dropdown-label', style={'color': '#656668', 'margin-left': '20px'}),
+
+    dbc.Row([
+        dbc.Col(dcc.Input(id=f'{i}', type='text', placeholder=f'Extra Input {i}', style={'width': '40%'})) for i in range(1, 13)
+    ], className='input-row', style={'display': 'flex', 'flexDirection': 'row', 'justifyContent': 'space-between', 'margin': '20px'}),
+    ], style={'display': 'flex', 'flexDirection': 'column', 'alignItems': 'center', 'margin': '20px'}),
+
+    html.Div(id='output-classification',
+    style={
+            'color': '#193d8b',
+            'textAlign': 'center',  # Center-align the text
+            'fontSize': '24px',    # Increase the font size
+            'margin-top': '20px'   # Add top margin
+        } ),
 
     html.Div([
         html.H5('K-nn Parameters', className='parameter-label', style={'color': '#031b4b', 'margin-top': '10px', 'font-style': 'italic'}),
@@ -506,7 +585,7 @@ html.Hr(style={'color': '#193d8b', 'background-color': '#193d8b', 'height': '2px
         dcc.Dropdown(
             id='clustering-algorithm-dropdown',
             options=clustering_algorithms,
-            value='kmeans',  # default selection
+            value='',  # default selection
             #style={'width': '35%'},
             style={
             'width': '100%',
@@ -561,9 +640,22 @@ html.Hr(style={'color': '#193d8b', 'background-color': '#193d8b', 'height': '2px
 
 
     html.Div([
-        html.H5('Resulting Image from K-Means Clustering',style={'color':'#656668','margin-left': '20px'}),
+        html.H5('Resulting Image from Clustering',style={'color':'#656668','margin-left': '20px'}),
         html.Img(id='kmeans-result-image', style={'width': '50%'})
     ]),
+
+
+    html.Div(
+        className="header",
+        style={"backgroundColor": "#3c6382"},
+        children=[html.H2(
+            "All rights reserved - FERKOUS & KHEMISSI - 2024",
+            style={
+                "color": "white",
+                "padding": "30px 0 30px 0",
+                "textAlign": "center"}
+        )],
+    ),
 ])
 
 
@@ -589,30 +681,33 @@ def get_selected_dataframe(selected_data):
         Output('image-section', 'children'),
         Output('discretization-table', 'data'),
         Output('association-rules-table', 'data'),
-        Output('kmeans-result-image', 'src'),
-        # Ajout de la sortie pour le bouton de réinitialisation
-        #Output('reset-button', 'n_clicks')
+        Output('kmeans-result-image', 'src'), #output-classification
+        Output('output-classification', 'children'),
     ],
     [
         Input('data-dropdown', 'value'),
         Input('discretization-method-dropdown', 'value'),
-        Input('clustering-algorithm-dropdown', 'value'),
+        Input('clustering-algorithm-dropdown', 'value'), #classification-algorithm-dropdown
+        Input('classification-algorithm-dropdown', 'value'),
+        [Input(f'{i}', 'value') for i in range(1, 13)],
         Input('k-input', 'value'),
         Input('n-iterations-input', 'value'),
         Input('convergence-input', 'value'),
         Input('eps-input', 'value'),
         Input('min-samples-input', 'value'),
-        #Input('reset-button', 'n_clicks'),  # Ajout de l'entrée pour le bouton de réinitialisation
         State('outlier-dropdown', 'value'),
         State('missing-dropdown', 'value'),
-        State('normalization-method-dropdown', 'value')
+        State('normalization-method-dropdown', 'value'),
+        Input('k-nn-input', 'value'),
+        Input('distance-metric', 'value'),
+        Input('estim-input', 'value'),
     ]
 )
 def update_output(
-    selected_data, selected_discretization_method, selected_cluster,
+    selected_data, selected_discretization_method, selected_cluster, selected_clasification, arg,
     selected_k, selected_iter, selected_converg, selected_eps, selected_minSample,
       # Ajout de l'argument pour le bouton de réinitialisation
-    selected_outliers, selected_missing, selected_normalization_method,
+    selected_outliers, selected_missing, selected_normalization_method, selected_k_knn, selected_distance, selected_estimation,
 ):
     df = get_selected_dataframe(selected_data)
     # ... rest of the function
@@ -626,11 +721,11 @@ def update_output(
     else:
         d='Agriculture'        
     table = html.Div([
-        html.H5(f'Selected Dataset: {d}',style={'color':'#031b4b','textAlign': 'center','margin-top': '70px'}),
+        html.H5(f'Selected Dataset: {d}',style={'color':'#031b4b','textAlign': 'center','margin-top': '10px'}),
         dash_table.DataTable(
             df.to_dict('records'),
             columns=[{'name': i, 'id': i} for i in df.columns],
-            style_table={'height': '360px','width': '90%','overflowY': 'auto','margin-top': '15px'},
+            style_table={'height': '360px','width': '100%','overflowY': 'auto','margin-top': '15px'},
             style_cell={
             'textAlign': 'center',
             'backgroundColor': '#f0f8ff',  # Couleur de fond des cellules
@@ -643,20 +738,7 @@ def update_output(
         ),
     ])
 
-    table_style = {
-    'font-family': 'Arial, sans-serif',
-    'border-collapse': 'collapse',
-    'width': '100%',
-    'margin-top': '10px',
-    }
-
-    # Créer un style pour les cellules de la DataTable
-    cell_style = {
-        'border': '3px solid #dddddd',
-        'text-align': 'left',
-        'padding': '8px',
-        'fontWeight': 'bold',
-    }
+    
 
     conditional_style = [
     {
@@ -697,9 +779,9 @@ def update_output(
     title_text='Boxplot of Numeric Columns',
     xaxis_title='X-Axis Title',
     yaxis_title='Y-Axis Title',
-    font=dict(family="Arial, sans-serif", size=12, color="#031b4b"),
-    paper_bgcolor='rgba(0,0,0,0)',  # Couleur de fond du graphique
-    plot_bgcolor='rgba(0,0,0,0)'  # Couleur de fond du tracé
+    font=dict(family="Arial, sans-serif", size=12, color="rgb(255, 255, 0)"),
+    paper_bgcolor='black',
+    plot_bgcolor='black'
     )
 
     histogram = px.histogram(df, x=df.select_dtypes(include=['number']).columns, marginal="rug")
@@ -707,9 +789,9 @@ def update_output(
     title_text='Histogram of Numeric Columns',
     xaxis_title='X-Axis Title',
     yaxis_title='Y-Axis Title',
-    font=dict(family="Arial, sans-serif", size=12, color="#031b4b"),
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)'
+    font=dict(family="Arial, sans-serif", size=12, color="rgb(255, 255, 0)"),
+    paper_bgcolor='black',
+    plot_bgcolor='black'
     )
 
 
@@ -719,9 +801,9 @@ def update_output(
     title_text='Correlation Matrix',
     xaxis_title='X-Axis Title',
     yaxis_title='Y-Axis Title',
-    font=dict(family="Arial, sans-serif", size=12, color="#031b4b"),
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)'
+    font=dict(family="Arial, sans-serif", size=12, color="rgb(255, 255, 0)"),
+    paper_bgcolor='black',
+    plot_bgcolor='black'
    )
 
 
@@ -730,10 +812,27 @@ def update_output(
  
            
     cleaned_boxplot = px.box(cleaned_df, y=cleaned_df.select_dtypes(include=['number']).columns)
-    cleaned_boxplot.update_layout(title_text='Cleaned Boxplot of Numeric Columns')
+    #cleaned_boxplot.update_layout(title_text='Cleaned Boxplot of Numeric Columns')
+    cleaned_boxplot.update_layout(
+    title_text='Cleaned Boxplot of Numeric Columns',
+    xaxis_title='X-Axis Title',
+    yaxis_title='Y-Axis Title',
+    font=dict(family="Arial, sans-serif", size=12, color="rgb(255, 255, 0)"),
+    paper_bgcolor='black',
+    plot_bgcolor='black'
+    )
 
     cleaned_histogram = px.histogram(cleaned_df, x=cleaned_df.select_dtypes(include=['number']).columns, marginal="rug")
-    cleaned_histogram.update_layout(title_text='Cleaned Histogram of Numeric Columns')
+    #cleaned_histogram.update_layout(title_text='Cleaned Histogram of Numeric Columns')
+    cleaned_histogram.update_layout(
+    title_text='Cleaned Histogram of Numeric Columns',
+    xaxis_title='X-Axis Title',
+    yaxis_title='Y-Axis Title',
+    font=dict(family="Arial, sans-serif", size=12, color="rgb(255, 255, 0)"),
+    paper_bgcolor='black',
+    plot_bgcolor='black'
+)
+
     
     normalized_df = normaliser(cleaned_df, selected_normalization_method)
     normalized_table_data = normalized_df.to_dict('records')
@@ -812,9 +911,27 @@ def update_output(
     else:
         print('vide')
         #image_section = html.Div()
-   
+    resultat_class=''
+    if selected_clasification == 'Knn': 
+        #print('ici: ',arg)
+        if None not in arg:
+            if selected_k_knn is not None and selected_distance is not None:
+                print('ici: ',arg)
+                r = execute_knn(arg, selected_k_knn, selected_distance)
+                resultat_class = 'The class associated with this instance is: '+str(r)
+                print(resultat_class)
+
     
-    return table, summary, boxplot, histogram, correlation_matrix, cleaned_table_data, cleaned_boxplot, cleaned_histogram, normalized_table_data, image_section, discretized_table, table_data, image_path
+    if selected_clasification == 'RandomF':
+        print('ici: ',arg)
+        if None not in arg:
+            if selected_estimation is not None:
+                print('ici: ',arg)
+                f = execute_RF(arg, selected_estimation)
+                resultat_class = 'The class associated with this instance is: '+str(f)
+                print(resultat_class)
+
+    return table, summary, boxplot, histogram, correlation_matrix, cleaned_table_data, cleaned_boxplot, cleaned_histogram, normalized_table_data, image_section, discretized_table, table_data, image_path, resultat_class
 
 
 

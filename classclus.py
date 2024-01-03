@@ -262,6 +262,7 @@ def execute_dbscan(eps, minsample):
 
 # clasification
 # # KNN
+# KNN
 class KNNClassifier:
     def __init__(self, k=3, distance_metric='euclidean'):
         self.k = k
@@ -272,7 +273,14 @@ class KNNClassifier:
         self.y_train = y_train
 
     def predict(self, X_test):
-        X_test = X_test.apply(pd.to_numeric, errors='coerce').dropna().values
+        if isinstance(X_test, pd.DataFrame):
+            X_test = X_test.apply(pd.to_numeric, errors='coerce').dropna().values
+        elif isinstance(X_test, np.ndarray):
+            # Assuming X_test is already numeric
+            pass
+        else:
+            raise ValueError("Unsupported input type. X_test should be either a DataFrame or a NumPy array.")
+
         predictions = []
 
         for x in X_test:
@@ -300,17 +308,152 @@ class KNNClassifier:
         else:
             raise ValueError("Invalid distance_metric. Supported values are 'euclidean', 'manhattan', 'chebyshev', and 'cosine'")
 
+
 def divided():
+    dataset = pd.read_csv("agriculture.csv")
+    dataset['Fertility'] = dataset['Fertility'].astype(int)
+
     numeric_dataset = dataset.apply(pd.to_numeric, errors='coerce')
     # Drop rows with missing values
     numeric_dataset = numeric_dataset.dropna()
     train_data, test_data = train_test_split(numeric_dataset, test_size=0.2, stratify=numeric_dataset['Fertility'])
     return train_data, test_data
         
-def execute_knn(instance):
-    train_data, test_data = divided()
-    knn_classifier = KNNClassifier(k=3, distance_metric='manhattan')
-    knn_classifier.fit(train_data.drop('Fertility', axis=1), train_data['Fertility'])
-    knn_predictions = knn_classifier.predict(test_data.drop('Fertility', axis=1))
+def execute_knn(instance,k,d):
+    X_test_instance = pd.DataFrame({
+    'I':[1],
+    'P': [instance[0]],
+    'K': [instance[1]],
+    'pH': [instance[2]],
+    'EC': [instance[3]],
+    'OC': [instance[4]],
+    'S': [instance[5]],
+    'Zn': [instance[6]],
+    'Fe': [instance[7]],
+    'Cu': [instance[8]],
+    'Mn': [instance[9]],
+    'B': [instance[10]],
+    'OM': [instance[11]],
+    })
 
+    train_data, test_data = divided()
+    knn_classifier = KNNClassifier(k, d)
+    knn_classifier.fit(train_data.drop('Fertility', axis=1), train_data['Fertility'])
+    predicted_label = knn_classifier.predict(X_test_instance)
+    return predicted_label
+
+
+# Decision Tree
+class DecisionTreeClassifier:
+    def __init__(self, max_depth=None):
+        self.max_depth = max_depth
+        self.tree = None
+
+    def fit(self, X_train, y_train):
+        self.tree = self._build_tree(X_train, y_train, depth=0)
+
+    def _build_tree(self, X, y, depth):
+        num_samples, num_features = X.shape
+        unique_classes, class_counts = np.unique(y, return_counts=True)
+
+        # If only one class in the node or maximum depth reached, return a leaf node
+        if len(unique_classes) == 1 or (self.max_depth is not None and depth == self.max_depth):
+            return {'class': unique_classes[0]}
+
+        # If there are no features left, return a leaf node with the majority class
+        if num_features == 0:
+            majority_class = unique_classes[np.argmax(class_counts)]
+            return {'class': majority_class}
+
+        # Choose the best split based on Gini impurity
+        best_gini = float('inf')
+        best_split = None
+
+        for feature_index in range(num_features):
+            feature_values = np.unique(X[:, feature_index])
+            for value in feature_values:
+                left_mask = X[:, feature_index] <= value
+                right_mask = ~left_mask
+
+                gini_left = self._calculate_gini(y[left_mask])
+                gini_right = self._calculate_gini(y[right_mask])
+
+                weighted_gini = (len(y[left_mask]) / num_samples) * gini_left + (len(y[right_mask]) / num_samples) * gini_right
+
+                if weighted_gini < best_gini:
+                    best_gini = weighted_gini
+                    best_split = {'feature_index': feature_index, 'value': value, 'left_mask': left_mask, 'right_mask': right_mask}
+
+        if best_gini == float('inf'):
+            # No split that reduces impurity found (all samples have the same value)
+            return {'class': unique_classes[0]}
+
+        # Recursively build the left and right branches of the tree
+        left_subtree = self._build_tree(X[best_split['left_mask']], y[best_split['left_mask']], depth + 1)
+        right_subtree = self._build_tree(X[best_split['right_mask']], y[best_split['right_mask']], depth + 1)
+
+        return {'feature_index': best_split['feature_index'], 'value': best_split['value'],
+                'left': left_subtree, 'right': right_subtree}
+
+    def _calculate_gini(self, labels):
+        _, class_counts = np.unique(labels, return_counts=True)
+        probabilities = class_counts / len(labels)
+        gini = 1 - np.sum(probabilities ** 2)
+        return gini
+
+    def predict(self, X_test):
+        return np.array([self._predict_single(x, self.tree) for x in X_test])
+
+    def _predict_single(self, x, node):
+        if 'class' in node:
+            return node['class']
+        else:
+            if x[node['feature_index']] <= node['value']:
+                return self._predict_single(x, node['left'])
+            else:
+                return self._predict_single(x, node['right'])
+
+
+
+class RandomForestClassifier:
+    def __init__(self, n_estimators=10, max_depth=None):
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.trees = []
+
+    def fit(self, X_train, y_train):
+        for _ in range(self.n_estimators):
+            tree = DecisionTreeClassifier(max_depth=self.max_depth)
+            indices = np.random.choice(len(X_train), len(X_train), replace=True)
+            tree.fit(X_train[indices], y_train[indices])
+            self.trees.append(tree)
+
+    def predict(self, X_test):
+        predictions = np.array([tree.predict(X_test) for tree in self.trees])
+        combined_predictions = np.apply_along_axis(lambda x: np.bincount(x).argmax(), axis=0, arr=predictions)
+        return combined_predictions
+
+
+def execute_RF(instance,E):
+    X_test_instance = pd.DataFrame({
+    'I':[1],
+    'P': [instance[0]],
+    'K': [instance[1]],
+    'pH': [instance[2]],
+    'EC': [instance[3]],
+    'OC': [instance[4]],
+    'S': [instance[5]],
+    'Zn': [instance[6]],
+    'Fe': [instance[7]],
+    'Cu': [instance[8]],
+    'Mn': [instance[9]],
+    'B': [instance[10]],
+    'OM': [instance[11]],
+    })
+
+    train_data, test_data = divided()
+    rf_classifier = RandomForestClassifier(n_estimators=10, max_depth=None)
+    rf_classifier.fit(train_data.drop('Fertility', axis=1).values, train_data['Fertility'].values)
+    predicted_label = rf_classifier.predict(X_test_instance)   
+    return predicted_label
 
