@@ -7,7 +7,6 @@ from typing import List
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 import seaborn as sns
-from prettytable import PrettyTable
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
 from sklearn.metrics.cluster import homogeneity_completeness_v_measure
@@ -436,24 +435,26 @@ class RandomForestClassifier:
 
 def execute_RF(instance,E):
     X_test_instance = pd.DataFrame({
-    'I':[1],
-    'P': [instance[0]],
-    'K': [instance[1]],
-    'pH': [instance[2]],
-    'EC': [instance[3]],
-    'OC': [instance[4]],
-    'S': [instance[5]],
-    'Zn': [instance[6]],
-    'Fe': [instance[7]],
-    'Cu': [instance[8]],
-    'Mn': [instance[9]],
-    'B': [instance[10]],
-    'OM': [instance[11]],
+        'I': [1],
+        'P': [float(instance[0])],
+        'K': [float(instance[1])],
+        'pH': [float(instance[2])],
+        'EC': [float(instance[3])],
+        'OC': [float(instance[4])],
+        'S': [float(instance[5])],
+        'Zn': [float(instance[6])],
+        'Fe': [float(instance[7])],
+        'Cu': [float(instance[8])],
+        'Mn': [float(instance[9])],
+        'B': [float(instance[10])],
+        'OM': [float(instance[11])],
     })
 
     train_data, test_data = divided()
-    rf_classifier = RandomForestClassifier(n_estimators=10, max_depth=None)
+    print(train_data.dtypes)
+    print(X_test_instance.dtypes)   
+    rf_classifier = RandomForestClassifier(n_estimators=E, max_depth=None)
     rf_classifier.fit(train_data.drop('Fertility', axis=1).values, train_data['Fertility'].values)
-    predicted_label = rf_classifier.predict(X_test_instance)   
-    return predicted_label
+    predicted_label = rf_classifier.predict(X_test_instance.values.reshape(1, -1).astype(float))
+    return predicted_label[0]
 

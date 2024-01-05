@@ -443,11 +443,13 @@ app.layout = html.Div([
     html.Div([
         html.Div(id='output-data-upload'),
         html.Div(id='data-summary'),
+        
         #dcc.Graph(id='boxplot'),
         #dcc.Graph(id='histogram'),
         #dcc.Graph(id='correlation-matrix'),  # New graph for correlation matrix
     ], style={'display': 'flex', 'flexWrap': 'wrap'}),
     
+    #html.Div(id='data-summary'),
     html.Div([
     html.Br(),
     "X-Axis", x_axis, 
@@ -772,8 +774,8 @@ def update_output(
         html.Div([
             html.H6('Description des colonnes:', style={'color': '#031b4b', 'textAlign': 'center', 'margin-bottom': '20px'}),
             dash_table.DataTable(
-                data=df.describe().to_dict('records'),
-                columns=[{'name': col, 'id': col} for col in df.describe().columns],
+                data=get_column_description(df).to_dict('records'),
+                columns=[{'name': col, 'id': col} for col in get_column_description(df).columns],
                 style_table=table_style,
                 style_cell=cell_style,
                 style_data_conditional=conditional_style,
@@ -858,7 +860,7 @@ def update_output(
     if selected_data == 'df2':
         image_section = html.Div([
         html.H5('Interesting Insights Of Dataset 2:'),
-        html.Img(src='/dataset2/confirmedtests.png'),    # ... (other image sources)
+        html.Img(src='src/dataset2/confirmedtests.png'),    # ... (other image sources)
         ])
         discretized_table = []
         table_data =[]
@@ -948,6 +950,7 @@ def update_output(
                 f = execute_RF(arg, selected_estimation)
                 resultat_class = 'The class associated with this instance is: '+str(f)
                 print(resultat_class)
+                
 
     return create_scatter_chart(x, y),table, summary, boxplot, histogram, correlation_matrix, cleaned_table_data, cleaned_boxplot, cleaned_histogram, normalized_table_data, image_section, discretized_table, table_data, image_path, resultat_class
 
