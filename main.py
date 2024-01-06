@@ -238,7 +238,7 @@ def generate_association_rules(Lk, min_conf, transactions):
 
 
 def create_scatter_chart(x_axis="N", y_axis="K"):
-    return px.scatter(data_frame=df1, x=x_axis, y=y_axis, height=600)
+    return px.scatter(data_frame=df1, x=x_axis, y=y_axis, height=600, template="plotly_dark",)
 
 columns = ["N", "K", "EC", "OC", "S", "Zn", "Fe", "Cu", "Mn", 'B', 'OM', 'Fertility']
 x_axis = dcc.Dropdown(id="x_axis", options=columns, value="N", clearable=False)
@@ -455,7 +455,7 @@ app.layout = html.Div([
         #dcc.Graph(id='histogram'),
         #dcc.Graph(id='correlation-matrix'),  # New graph for correlation matrix
     ], style={'display': 'flex', 'flexWrap': 'wrap'}),
-    
+    html.Div(id='graph-data2-section'),
     #html.Div(id='data-summary'),
     html.Div([
     html.Br(),
@@ -665,12 +665,12 @@ html.Hr(style={'color': '#193d8b', 'background-color': '#193d8b', 'height': '2px
 
     #html.Button('Reset', id='reset-button', n_clicks=0),
 
-
-    html.Div([
-        html.H5('Resulting Image from Clustering',style={'color':'#656668','margin-left': '20px'}),
-        html.Img(id='kmeans-result-image', style={'width': '50%'})
-    ]),
-
+    html.H5('Resulting Image from Clustering',style={'color':'#656668','margin-left': '20px'}),
+   
+    html.Div(id='kmeans-result-image'),
+    
+    
+    
 
     html.Div(
         className="header",
@@ -708,8 +708,9 @@ def get_selected_dataframe(selected_data):
         Output('image-section', 'children'),
         Output('discretization-table', 'data'),
         Output('association-rules-table', 'data'),
-        Output('kmeans-result-image', 'src'), #output-classification
+        Output('kmeans-result-image', 'children'), #output-classification
         Output('output-classification', 'children'),
+        Output('graph-data2-section', 'children'),
     ],
     [   Input("x_axis", "value"),Input("y_axis", "value"),
         Input('data-dropdown', 'value'),
@@ -863,16 +864,17 @@ def update_output(
     
     normalized_df = normaliser(cleaned_df, selected_normalization_method)
     normalized_table_data = normalized_df.to_dict('records')
-    
+    image_section3=''
     if selected_data == 'df2':
-        image_section = html.Div([
-        html.H5('Interesting Insights Of Dataset 2:'),
-        html.Img(src=b64_image('assets/confirmedtests.png')),
-        html.Img(src='assets/dataset2/covidevolutionovertime.png'),
-        html.Img(src='assets/dataset2/weekly.png'),
-        html.Img(src='assets/dataset2/q3.png'),
-        html.Img(src='assets/dataset2/q5.png'),
-        html.Img(src='assets/dataset2/q6.png'),# ... (other image sources)
+        image_section3 = html.Div([
+        html.H5('Interesting Insights Of Dataset 2:',style={'color': '#031b4b', 'textAlign': 'center', 'margin-bottom': '20px'}),
+        html.Img(src=b64_image('assets/confirmedtests.png'),style={'width': '50%', 'height': 'auto'}),
+        html.Img(src=b64_image('assets/covidevolutionovertime.png'),style={'width': '50%', 'height': 'auto'}),
+        html.Img(src=b64_image('assets/dispersion.png'),style={'width': '50%', 'height': 'auto'}),
+        html.Img(src=b64_image('assets/weekly.png'),style={'width': '50%', 'height': 'auto'}),
+        html.Img(src=b64_image('assets/q3.png'),style={'width': '50%', 'height': 'auto'}),
+        html.Img(src=b64_image('assets/q5.png'),style={'width': '50%', 'height': 'auto'}),
+        html.Img(src=b64_image('assets/q6.png'),style={'width': '50%', 'height': 'auto'}),   
         ])
         discretized_table = []
         table_data =[]
@@ -935,11 +937,12 @@ def update_output(
             image_path = execute_dbscan(selected_eps, selected_minSample)
             print('apres 2')
     # Convert the image to base64
+    image_section2=''
     if image_path:
         with open(image_path, "rb") as image_file:
             encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
         # Set the image as a child of the `image-section`
-        image_section = html.Img(src=f'data:image/png;base64,{encoded_image}', style={'width': '50%'})
+        image_section2 = html.Img(src=f'data:image/png;base64,{encoded_image}', style={'width': '50%'})
     else:
         print('vide')
         #image_section = html.Div()
@@ -963,8 +966,8 @@ def update_output(
                 resultat_class = 'The class associated with this instance is: '+str(f)
                 print(resultat_class)
                 
-
-    return create_scatter_chart(x, y),table, summary, boxplot, histogram, correlation_matrix, cleaned_table_data, cleaned_boxplot, cleaned_histogram, normalized_table_data, image_section, discretized_table, table_data, image_path, resultat_class
+            
+    return create_scatter_chart(x, y),table, summary, boxplot, histogram, correlation_matrix, cleaned_table_data, cleaned_boxplot, cleaned_histogram, normalized_table_data, image_section, discretized_table, table_data, image_section2, resultat_class, image_section3
 
 
 
