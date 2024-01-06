@@ -14,7 +14,9 @@ Access the app in your browser at http://127.0.0.1:8050/.
 ## Project Structure
 
 main.py: The main script containing the Dash application.
+
 classclus.py: Module containing functions for clustering and classification algorithms.
+
 Dataset1.csv, Dataset2.csv, Dataset3.xlsx: Sample datasets for testing the application.
 ## Dependencies
 Dash: Web framework for building analytical web applications.
