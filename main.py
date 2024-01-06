@@ -11,6 +11,8 @@ import dash_bootstrap_components as dbc
 
 import pandas as pd
 import os
+import base64
+
 
 from classclus import execute_kmeans
 from classclus import execute_dbscan
@@ -241,6 +243,11 @@ def create_scatter_chart(x_axis="N", y_axis="K"):
 columns = ["N", "K", "EC", "OC", "S", "Zn", "Fe", "Cu", "Mn", 'B', 'OM', 'Fertility']
 x_axis = dcc.Dropdown(id="x_axis", options=columns, value="N", clearable=False)
 y_axis = dcc.Dropdown(id="y_axis", options=columns, value="K", clearable=False)
+
+def b64_image(image_filename):
+    with open(image_filename, 'rb') as f:
+        image = f.read()
+    return 'data:image/png;base64,' + base64.b64encode(image).decode('utf-8')
 
 #===========================App Layout======================================#
 
@@ -860,7 +867,12 @@ def update_output(
     if selected_data == 'df2':
         image_section = html.Div([
         html.H5('Interesting Insights Of Dataset 2:'),
-        html.Img(src='src/dataset2/confirmedtests.png'),    # ... (other image sources)
+        html.Img(src=b64_image('assets/confirmedtests.png')),
+        html.Img(src='assets/dataset2/covidevolutionovertime.png'),
+        html.Img(src='assets/dataset2/weekly.png'),
+        html.Img(src='assets/dataset2/q3.png'),
+        html.Img(src='assets/dataset2/q5.png'),
+        html.Img(src='assets/dataset2/q6.png'),# ... (other image sources)
         ])
         discretized_table = []
         table_data =[]
@@ -959,8 +971,3 @@ def update_output(
 
 if __name__ == '__main__':
     app.run_server(debug=True, use_reloader=False, threaded=False)
-
-
-
-
-    
